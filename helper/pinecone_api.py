@@ -9,11 +9,15 @@ pinecone.init(api_key=os.getenv("PINECONE_API_KEY"),
 
 
 def create_index() -> None:
-    pinecone.create_index("langchain-index", dimension=1536)  # default dinmension of openai is 1536
+    pinecone.create_index(os.getenv("PINECONE_INDEX"), dimension=1536)  # default dinmension of openai is 1536
+
+
+def delete_index() -> None:
+    pinecone.delete_index(os.getenv("PINECONE_INDEX"))
 
 
 def insert_vector(vectors) -> None:
-    index = pinecone.Index("langchain-index")
+    index = pinecone.Index(os.getenv("PINECONE_INDEX"))
     upsert_response = index.upsert(
         vectors=vectors,
         namespace="langchain-namespace"
