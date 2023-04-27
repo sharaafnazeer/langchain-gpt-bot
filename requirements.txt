@@ -8,3 +8,4 @@ pypdf
 Pillow==9.1
 pytesseract
 whatsapp-api-client-python
+moviepy

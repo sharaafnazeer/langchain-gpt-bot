@@ -3,6 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 
+from helper.audio_api import audio_to_text
 from src.generate import process_content
 
 load_dotenv()
@@ -46,12 +47,22 @@ def onIncomingMessageReceived(body):
           + 'At ' + ' Incoming from ' \
           + json.dumps(senderData, ensure_ascii=False) \
           + ' message = ' + json.dumps(messageData, ensure_ascii=False))
+
+    send_message(senderData["sender"], "Thinking...")
+
     result = None
     if messageData["typeMessage"] == 'extendedTextMessage':
         result = process_content(messageData["extendedTextMessageData"]["text"], [])
     elif messageData["typeMessage"] == 'textMessage':
         result = process_content(messageData["textMessageData"]["textMessage"], [])
-
+    elif messageData["typeMessage"] == 'audioMessage':
+        try:
+            audio = messageData["fileMessageData"]["downloadUrl"]
+            text = audio_to_text(audio)
+            result = process_content(text, [])
+        except:
+            send_message(senderData["sender"], "Sorry I don't understand your requirement")
+            pass
     if result is not None:
         send_message(senderData["sender"], result["answer"])
 
