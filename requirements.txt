@@ -7,4 +7,4 @@ tiktoken
 pypdf
 Pillow==9.1
 pytesseract
-install whatsapp-api-client-python
+whatsapp-api-client-python
