@@ -61,7 +61,7 @@ def generate_content() -> None:
 def make_chain(vector_store):
     retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 20})
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key='answer')
-    model = OpenAI(temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
+    model = OpenAI(temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-4")
 
     chain = ConversationalRetrievalChain.from_llm(llm=model, retriever=retriever, return_source_documents=True,
                                                   verbose=True, memory=memory,
